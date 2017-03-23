@@ -1,0 +1,62 @@
+﻿@model IEnumerable<MVC_12H_N04.Models.UtilizadoresModel>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Adicionar novo utilizador", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.username)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.email)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.morada)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.nif)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.perfil)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.estado)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.username)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.email)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.morada)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.nif)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.perfil)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.estado)
+        </td>
+        <td>
+            @Html.ActionLink("Editar", "Edit", new { /* id=item.PrimaryKey */ }) |
+            @Html.ActionLink("Apagar", "Delete", new { /* id=item.PrimaryKey */ })
+        </td>
+    </tr>
+}
+
+</table>
