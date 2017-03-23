@@ -54,19 +54,19 @@ namespace MVC_12H_N04.Models
             List<SqlParameter> parametros = new List<SqlParameter>()
             {
                 new SqlParameter(){ParameterName="@username",
-                    SqlDbType =SqlDbType.VarChar,Value=novo.username},
+                    SqlDbType =SqlDbType.NVarChar,Value=novo.username},
                 new SqlParameter(){ParameterName="@password",
-                    SqlDbType =SqlDbType.VarChar,Value=novo.password},
+                    SqlDbType =SqlDbType.NVarChar,Value=novo.password},
                  new SqlParameter(){ParameterName="@perfil",
-                    SqlDbType =SqlDbType.Int,Value=novo.perfil},
+                    SqlDbType =SqlDbType.Int,Value=1},
                  new SqlParameter(){ParameterName="@estado",
-                    SqlDbType =SqlDbType.Int,Value=novo.estado},
+                    SqlDbType =SqlDbType.Bit,Value=true},
                  new SqlParameter(){ParameterName="@nif",
                     SqlDbType =SqlDbType.Int,Value=novo.nif},
                  new SqlParameter(){ParameterName="@email",
-                    SqlDbType =SqlDbType.Int,Value=novo.email},
+                    SqlDbType =SqlDbType.NVarChar,Value=novo.email},
                  new SqlParameter(){ParameterName="@morada",
-                    SqlDbType =SqlDbType.Int,Value=novo.morada},
+                    SqlDbType =SqlDbType.NVarChar,Value=novo.morada},
             };
             BD.Instance.executaComando(sql, parametros);
         }
