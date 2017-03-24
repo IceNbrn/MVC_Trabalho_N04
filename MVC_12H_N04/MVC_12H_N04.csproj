@@ -187,6 +187,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\LogOutController.cs" />
+    <Compile Include="Controllers\ProdutosController.cs" />
     <Compile Include="Controllers\RegistarController.cs" />
     <Compile Include="Controllers\UtilizadoresController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -195,6 +196,7 @@
     </Compile>
     <Compile Include="Models\BD.cs" />
     <Compile Include="Models\LoginModel.cs" />
+    <Compile Include="Models\ProdutosModel.cs" />
     <Compile Include="Models\UtilizadoresModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
@@ -202,6 +204,7 @@
   <ItemGroup>
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\style.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -269,6 +272,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Views\LogOut\" />
+    <Folder Include="Views\Produtos\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
