@@ -9,25 +9,22 @@ namespace MVC_Tutorial_2017.Controllers
 {
     public class UtilizadoresController : Controller
     {
-        UtilizadoresBD bd = new UtilizadoresBD();
-        public HttpStatusCodeResult error401()
-        {
-            if (Session["perfil"] == null || Session["perfil"].Equals(1))
-                return new HttpStatusCodeResult(401);
+        UtilizadoresBd _bd = new UtilizadoresBd();
 
-            return null;
-        }
+        public HttpStatusCodeResult Error401()
+            => Session["perfil"] == null || Session["perfil"].Equals(1) ? new HttpStatusCodeResult(401) : null;
+        
         // GET: Utilizadores
         public ActionResult Index()
         {
-            error401();
-            return View(bd.lista());
+            Error401();
+            return View(_bd.Lista());
         }
 
         //adicionar utilizador
         public ActionResult Create()
         {
-            error401();
+            Error401();
             return View();
         }
         [HttpPost]
@@ -37,29 +34,29 @@ namespace MVC_Tutorial_2017.Controllers
             if (ModelState.IsValid)
             {
 
-                bd.adicionarUtilizadores(novo);
+                _bd.AdicionarUtilizadores(novo);
                 return RedirectToAction("Index");
             }
             return View(novo);
         }
         public ActionResult Delete(string id)
         {
-            error401();
-            return View(bd.lista(id)[0]);
+            Error401();
+            return View(_bd.Lista(id)[0]);
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
         [ActionName("Delete")]
         public ActionResult ConfirmarDelete(string id)
         {
-            bd.removerUtilizador(id);
+            _bd.RemoverUtilizador(id);
             return RedirectToAction("index");
         }
 
         public ActionResult Edit(string id)
         {
-            error401();
-            return View(bd.lista(id)[0]);
+            Error401();
+            return View(_bd.Lista(id)[0]);
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -67,7 +64,7 @@ namespace MVC_Tutorial_2017.Controllers
         {
             if (ModelState.IsValid)
             {
-                bd.editarUtilizador(dados);
+                _bd.EditarUtilizador(dados);
                 return RedirectToAction("index");
             }
             return View(dados);

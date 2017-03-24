@@ -9,11 +9,16 @@ namespace MVC_12H_N04.Controllers
 {
     public class ProdutosController : Controller
     {
-        ProdutosBD bd = new ProdutosBD();
+        ProdutosBd _bd = new ProdutosBd();
+
+        public HttpStatusCodeResult Error401()
+            => Session["perfil"] == null || Session["perfil"].Equals(1) ? new HttpStatusCodeResult(401) : null;
+
         // GET: Produtos
         public ActionResult Index()
         {
-            return View();
+            Error401();
+            return View(_bd.Lista());
         }
     }
 }

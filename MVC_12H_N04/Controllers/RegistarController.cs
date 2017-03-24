@@ -9,7 +9,7 @@ namespace MVC_12H_N04.Controllers
 {
     public class RegistarController : Controller
     {
-        UtilizadoresBD bd = new UtilizadoresBD();
+        UtilizadoresBd _bd = new UtilizadoresBd();
         // GET: Registar
         public ActionResult Index()
         {
@@ -19,7 +19,7 @@ namespace MVC_12H_N04.Controllers
         {
             if (ModelState.IsValid)
             {
-                bd.adicionarUtilizadores(novo);
+                _bd.AdicionarUtilizadores(novo);
                 return RedirectToAction("Index", "Login");
             }
             return View();

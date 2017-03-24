@@ -10,7 +10,7 @@ namespace MVC_12H_N04.Controllers
 {
     public class LoginController : Controller
     {
-        LoginBD bd = new LoginBD();
+        LoginBd _bd = new LoginBd();
         // GET: Login
         public ActionResult Index()
         {
@@ -22,7 +22,7 @@ namespace MVC_12H_N04.Controllers
         {
             if (ModelState.IsValid)
             {
-                UtilizadoresModel utilizador = bd.validarLogin(dados);
+                UtilizadoresModel utilizador = _bd.ValidarLogin(dados);
                 if (utilizador == null)
                 {
                     ModelState.AddModelError("", "Login falhou. Tente novamente.");
@@ -30,9 +30,9 @@ namespace MVC_12H_N04.Controllers
                 }
                 else
                 {
-                    Session["perfil"] = utilizador.perfil;
-                    Session["username"] = utilizador.username;
-                    FormsAuthentication.SetAuthCookie(utilizador.username, false);
+                    Session["perfil"] = utilizador.Perfil;
+                    Session["username"] = utilizador.Username;
+                    FormsAuthentication.SetAuthCookie(utilizador.Username, false);
 
                     if (Request.QueryString["ReturnUrl"] == null)
                         return RedirectToAction("Index", "Home");

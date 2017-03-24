@@ -12,30 +12,30 @@ using System.Web.SessionState;
 
 namespace MVC_12H_N04.Models
 {
-    public class BD
+    public class Bd
     {
-        private static BD instance;
-        public static BD Instance {
+        private static Bd _instance;
+        public static Bd Instance {
             get {
-                if (instance == null)
-                    instance = new BD();
-                return instance;
+                if (_instance == null)
+                    _instance = new Bd();
+                return _instance;
             }
         }
-        private string strLigacao;
-        private SqlConnection ligacaoBD;
-        public BD()
+        private string _strLigacao;
+        private SqlConnection _ligacaoBd;
+        public Bd()
         {
             //ligação à bd
-            strLigacao = ConfigurationManager.ConnectionStrings["sql"].ToString();
-            ligacaoBD = new SqlConnection(strLigacao);
-            ligacaoBD.Open();
+            _strLigacao = ConfigurationManager.ConnectionStrings["sql"].ToString();
+            _ligacaoBd = new SqlConnection(_strLigacao);
+            _ligacaoBd.Open();
         }
-        ~BD()
+        ~Bd()
         {
             try
             {
-                ligacaoBD.Close();
+                _ligacaoBd.Close();
             }
             catch (Exception e)
             {
@@ -44,9 +44,9 @@ namespace MVC_12H_N04.Models
         }
         #region Funções genéricas
         //devolve consulta
-        public DataTable devolveConsulta(string sql)
+        public DataTable DevolveConsulta(string sql)
         {
-            SqlCommand comando = new SqlCommand(sql, ligacaoBD);
+            SqlCommand comando = new SqlCommand(sql, _ligacaoBd);
             DataTable registos = new DataTable();
             SqlDataReader dados = comando.ExecuteReader();
             registos.Load(dados);
@@ -54,9 +54,9 @@ namespace MVC_12H_N04.Models
             comando.Dispose();
             return registos;
         }
-        public DataTable devolveConsulta(string sql, List<SqlParameter> parametros)
+        public DataTable DevolveConsulta(string sql, List<SqlParameter> parametros)
         {
-            SqlCommand comando = new SqlCommand(sql, ligacaoBD);
+            SqlCommand comando = new SqlCommand(sql, _ligacaoBd);
             DataTable registos = new DataTable();
             comando.Parameters.AddRange(parametros.ToArray());
             SqlDataReader dados = comando.ExecuteReader();
@@ -67,9 +67,9 @@ namespace MVC_12H_N04.Models
         }
 
 
-        public DataTable devolveConsulta(string sql, List<SqlParameter> parametros, SqlTransaction transacao)
+        public DataTable DevolveConsulta(string sql, List<SqlParameter> parametros, SqlTransaction transacao)
         {
-            SqlCommand comando = new SqlCommand(sql, ligacaoBD);
+            SqlCommand comando = new SqlCommand(sql, _ligacaoBd);
             comando.Transaction = transacao;
             DataTable registos = new DataTable();
             comando.Parameters.AddRange(parametros.ToArray());
@@ -81,11 +81,11 @@ namespace MVC_12H_N04.Models
         }
 
         //executar comando
-        public bool executaComando(string sql)
+        public bool ExecutaComando(string sql)
         {
             try
             {
-                SqlCommand comando = new SqlCommand(sql, ligacaoBD);
+                SqlCommand comando = new SqlCommand(sql, _ligacaoBd);
                 comando.ExecuteNonQuery();
                 comando.Dispose();
             }
@@ -96,11 +96,11 @@ namespace MVC_12H_N04.Models
             }
             return true;
         }
-        public bool executaComando(string sql, List<SqlParameter> parametros)
+        public bool ExecutaComando(string sql, List<SqlParameter> parametros)
         {
             try
             {
-                SqlCommand comando = new SqlCommand(sql, ligacaoBD);
+                SqlCommand comando = new SqlCommand(sql, _ligacaoBd);
                 comando.Parameters.AddRange(parametros.ToArray());
                 comando.ExecuteNonQuery();
                 comando.Dispose();
@@ -113,11 +113,11 @@ namespace MVC_12H_N04.Models
             }
             return true;
         }
-        public bool executaComando(string sql, List<SqlParameter> parametros, SqlTransaction transacao)
+        public bool ExecutaComando(string sql, List<SqlParameter> parametros, SqlTransaction transacao)
         {
             try
             {
-                SqlCommand comando = new SqlCommand(sql, ligacaoBD);
+                SqlCommand comando = new SqlCommand(sql, _ligacaoBd);
                 comando.Parameters.AddRange(parametros.ToArray());
                 comando.Transaction = transacao;
                 comando.ExecuteNonQuery();
@@ -132,7 +132,7 @@ namespace MVC_12H_N04.Models
         }
         #endregion
         #region comentarios
-        public bool adicionaComentario(string comentario, string autor, int idProduto)
+        public bool AdicionaComentario(string comentario, string autor, int idProduto)
         {
 
             string sql = "INSERT INTO Comentarios(id_produto,autor,comentario)";
@@ -143,20 +143,20 @@ namespace MVC_12H_N04.Models
                 new SqlParameter() {ParameterName="@autor",SqlDbType=SqlDbType.NVarChar,Value=autor},
                 new SqlParameter() {ParameterName="@comentario",SqlDbType=SqlDbType.NVarChar,Value=comentario}
             };
-            return executaComando(sql, parametros);
+            return ExecutaComando(sql, parametros);
         }
-        public DataTable listaComentario(int id)
+        public DataTable ListaComentario(int id)
         {
             string sql = "SELECT * FROM Comentarios WHERE id_produto = @id";
             List<SqlParameter> parametros = new List<SqlParameter>()
             {
                 new SqlParameter() {ParameterName="@id",SqlDbType=SqlDbType.Int,Value=id}
             };
-            DataTable dados = devolveConsulta(sql, parametros);
+            DataTable dados = DevolveConsulta(sql, parametros);
             return dados;
         }
         #endregion
-        public void compra(string produtos,int id_utilizador)
+        public void Compra(string produtos,int idUtilizador)
         {
             /*HttpContext context = HttpContext.Current;
             context.Session["produtos"] = "";*/
@@ -165,24 +165,24 @@ namespace MVC_12H_N04.Models
 
             foreach (var item in produtosArray)
             {
-                remove1Produto(int.Parse(item));
+                Remove1Produto(int.Parse(item));
             }
             string sql = "INSERT INTO Compras(id_utilizador,produtos) VALUES (@id_utilizador,@produtos)";
             List<SqlParameter> parametros = new List<SqlParameter>()
             {
-                new SqlParameter() {ParameterName="@id_utilizador",SqlDbType=SqlDbType.Int,Value=id_utilizador },
+                new SqlParameter() {ParameterName="@id_utilizador",SqlDbType=SqlDbType.Int,Value=idUtilizador },
                 new SqlParameter() {ParameterName="@produtos",SqlDbType=SqlDbType.NVarChar,Value=produtosSemBug }
             };
-            executaComando(sql, parametros);
+            ExecutaComando(sql, parametros);
 
 
         }
-        public int executaScalar(string sql)
+        public int ExecutaScalar(string sql)
         {
             int valor = -1;
             try
             {
-                SqlCommand comando = new SqlCommand(sql, ligacaoBD);
+                SqlCommand comando = new SqlCommand(sql, _ligacaoBd);
                 valor = (int)comando.ExecuteScalar();
                 comando.Dispose();
             }
@@ -193,12 +193,12 @@ namespace MVC_12H_N04.Models
             }
             return valor;
         }
-        public int executaScalar(string sql, List<SqlParameter> parametros)
+        public int ExecutaScalar(string sql, List<SqlParameter> parametros)
         {
             int valor = -1;
             try
             {
-                SqlCommand comando = new SqlCommand(sql, ligacaoBD);
+                SqlCommand comando = new SqlCommand(sql, _ligacaoBd);
                 comando.Parameters.AddRange(parametros.ToArray());
                 valor = (int)comando.ExecuteScalar();
                 comando.Dispose();
@@ -210,9 +210,9 @@ namespace MVC_12H_N04.Models
             }
             return valor;
         }
-        public void remove1Produto(int id)
+        public void Remove1Produto(int id)
         {
-            DataTable dados = devolveDadosProduto(id);
+            DataTable dados = DevolveDadosProduto(id);
 
             int quantidade = int.Parse(dados.Rows[0]["quantidade"].ToString()) - 1;
             string sql = "UPDATE Produtos SET quantidade=@quantidade WHERE id=@id";
@@ -222,30 +222,30 @@ namespace MVC_12H_N04.Models
                 new SqlParameter() {ParameterName="@id",SqlDbType=SqlDbType.Int,Value= id},
                 new SqlParameter() {ParameterName="@quantidade",SqlDbType=SqlDbType.Int,Value= quantidade}
             };
-            executaComando(sql, parametros);
+            ExecutaComando(sql, parametros);
         }
-        public DataTable getProdutosCarrinho(int id)
+        public DataTable GetProdutosCarrinho(int id)
         {
             string sql = "SELECT * FROM Produtos WHERE id = @id";
             List<SqlParameter> parametros = new List<SqlParameter>()
             {
                 new SqlParameter() {ParameterName="@id",SqlDbType=SqlDbType.Int,Value=id}
             };
-            DataTable dados = devolveConsulta(sql, parametros);
+            DataTable dados = DevolveConsulta(sql, parametros);
             return dados;
 
         }
         #region marca
-        public bool addMarca(string nome)
+        public bool AddMarca(string nome)
         {
             string sql = "INSERT INTO Marcas(nome) VALUES (@nome)";
             List<SqlParameter> parametros = new List<SqlParameter>()
             {
                 new SqlParameter() {ParameterName="@nome",SqlDbType=SqlDbType.VarChar,Value=nome }
             };
-            return executaComando(sql, parametros);
+            return ExecutaComando(sql, parametros);
         }
-        public void apagaMarca(int id)
+        public void ApagaMarca(int id)
         {
             
             string sql = "DELETE FROM Marcas WHERE idMarca=@id";
@@ -253,9 +253,9 @@ namespace MVC_12H_N04.Models
             {
                 new SqlParameter() {ParameterName="@id",SqlDbType=SqlDbType.Int,Value=id }
             };
-            executaComando(sql, parametros);
+            ExecutaComando(sql, parametros);
         }
-        public void atualizarMarca(int id, string nome)
+        public void AtualizarMarca(int id, string nome)
         {
             string sql = @"UPDATE Marcas SET nome=@nome WHERE IdMarca=@id";
 
@@ -264,13 +264,13 @@ namespace MVC_12H_N04.Models
                 new SqlParameter() {ParameterName="@nome",SqlDbType=SqlDbType.NVarChar,Value=nome },
                 new SqlParameter() {ParameterName="@id",SqlDbType=SqlDbType.Int,Value=id },
             };
-            executaComando(sql, parametros);
+            ExecutaComando(sql, parametros);
         }
         #endregion
         #region utilizadores
 
 
-        public bool registarUtilizador(string email, string username, string morada, string nif, string password, int perfil)
+        public bool RegistarUtilizador(string email, string username, string morada, string nif, string password, int perfil)
         {
             string sql = "INSERT INTO utilizadores(email,username,morada,nif,password,estado,perfil) ";
             sql += "VALUES (@email,@username,@morada,@nif,HASHBYTES('SHA2_512',@password),@estado,@perfil)";
@@ -284,9 +284,9 @@ namespace MVC_12H_N04.Models
                 new SqlParameter() {ParameterName="@estado",SqlDbType=SqlDbType.Int,Value=0 },
                 new SqlParameter() {ParameterName="perfil",SqlDbType=SqlDbType.Int,Value=perfil },
             };
-            return executaComando(sql, parametros);
+            return ExecutaComando(sql, parametros);
         }
-        public bool registarUtilizador(string email, string username, string morada, string nif, string password, int estado, int perfil)
+        public bool RegistarUtilizador(string email, string username, string morada, string nif, string password, int estado, int perfil)
         {
             string sql = "INSERT INTO utilizadores(email,username,morada,nif,password,estado,perfil) ";
             sql += "VALUES (@email,@username,@morada,@nif,HASHBYTES('SHA2_512',@password),@estado,@perfil)";
@@ -300,9 +300,9 @@ namespace MVC_12H_N04.Models
                 new SqlParameter() {ParameterName="@estado",SqlDbType=SqlDbType.Int,Value=estado },
                 new SqlParameter() {ParameterName="perfil",SqlDbType=SqlDbType.Int,Value=perfil },
             };
-            return executaComando(sql, parametros);
+            return ExecutaComando(sql, parametros);
         }
-        public void atualizarUtilizador(int id, string username, string email, string morada, string nif)
+        public void AtualizarUtilizador(int id, string username, string email, string morada, string nif)
         {
             string sql = @"UPDATE utilizadores SET email=@email,username=@username,morada=@morada,nif=@nif 
                             WHERE id=@id";
@@ -315,31 +315,31 @@ namespace MVC_12H_N04.Models
                 new SqlParameter() {ParameterName="@nif",SqlDbType=SqlDbType.VarChar,Value=nif },
                 new SqlParameter() {ParameterName="@id",SqlDbType=SqlDbType.Int,Value=id },
             };
-            executaComando(sql, parametros);
+            ExecutaComando(sql, parametros);
         }
-        public DataTable devolveDadosUtilizador(int id)
+        public DataTable DevolveDadosUtilizador(int id)
         {
             string sql = "SELECT * FROM utilizadores WHERE id=@id";
             List<SqlParameter> parametros = new List<SqlParameter>()
             {
                 new SqlParameter() {ParameterName="@id",SqlDbType=SqlDbType.Int,Value=id }
             };
-            DataTable dados = devolveConsulta(sql, parametros);
+            DataTable dados = DevolveConsulta(sql, parametros);
             return dados;
         }
-        public int estadoUtilizador(int id)
+        public int EstadoUtilizador(int id)
         {
             string sql = "SELECT estado FROM utilizadores WHERE id=@id";
             List<SqlParameter> parametros = new List<SqlParameter>()
             {
                 new SqlParameter() {ParameterName="@id",SqlDbType=SqlDbType.Int,Value=id }
             };
-            DataTable dados = devolveConsulta(sql, parametros);
+            DataTable dados = DevolveConsulta(sql, parametros);
             return int.Parse(dados.Rows[0][0].ToString());
         }
-        public void ativarDesativarUtilizador(int id)
+        public void AtivarDesativarUtilizador(int id)
         {
-            int estado = estadoUtilizador(id);
+            int estado = EstadoUtilizador(id);
             if (estado == 0) estado = 1;
             else estado = 0;
             string sql = "UPDATE utilizadores SET estado = @estado WHERE id=@id";
@@ -348,9 +348,9 @@ namespace MVC_12H_N04.Models
                 new SqlParameter() {ParameterName="@estado",SqlDbType=SqlDbType.Bit,Value=estado },
                 new SqlParameter() {ParameterName="@id",SqlDbType=SqlDbType.Int,Value=id }
             };
-            executaComando(sql, parametros);
+            ExecutaComando(sql, parametros);
         }
-        public DataTable verificarLogin(string email, string password)
+        public DataTable VerificarLogin(string email, string password)
         {
             string sql = "SELECT * FROM Utilizadores WHERE email=@email AND ";
             sql += "password=HASHBYTES('SHA2_512',@password) AND estado=1";
@@ -359,40 +359,40 @@ namespace MVC_12H_N04.Models
                 new SqlParameter() {ParameterName="@email",SqlDbType=SqlDbType.NVarChar,Value=email },
                 new SqlParameter() {ParameterName="@password",SqlDbType=SqlDbType.NVarChar,Value=password }
             };
-            DataTable utilizador = devolveConsulta(sql, parametros);
+            DataTable utilizador = DevolveConsulta(sql, parametros);
             if (utilizador == null || utilizador.Rows.Count == 0)
                 return null;
             string id = utilizador.Rows[0]["id"].ToString();
-            executaComando(sql);
+            ExecutaComando(sql);
             return utilizador;
         }
 
-        public DataTable listaUtilizadoresDisponiveis()
+        public DataTable ListaUtilizadoresDisponiveis()
         {
             string sql = "SELECT id, email,username, morada, nif,  estado, perfil FROM utilizadores where perfil=1";
-            return devolveConsulta(sql);
+            return DevolveConsulta(sql);
         }
-        public DataTable listaMarcas()
+        public DataTable ListaMarcas()
         {
             string sql = "SELECT * FROM Marcas";
-            return devolveConsulta(sql);
+            return DevolveConsulta(sql);
         }
-        public DataTable listaMarcas(int id)
+        public DataTable ListaMarcas(int id)
         {
             string sql = "SELECT * FROM Marcas WHERE IdMarca=@id";
             List<SqlParameter> parametros = new List<SqlParameter>()
             {
                 new SqlParameter() {ParameterName="@id",SqlDbType=SqlDbType.Int,Value=id }
             };
-            DataTable dados = devolveConsulta(sql, parametros);
+            DataTable dados = DevolveConsulta(sql, parametros);
             return dados;
         }
-        public DataTable listaTodosUtilizadores()
+        public DataTable ListaTodosUtilizadores()
         {
             string sql = "SELECT id, email,username, morada, nif,  estado, perfil FROM utilizadores";
-            return devolveConsulta(sql);
+            return DevolveConsulta(sql);
         }
-        public bool removerUtilizador(int id)
+        public bool RemoverUtilizador(int id)
         {
             string sql = "DELETE FROM Utilizadores WHERE id=@id";
 
@@ -400,9 +400,9 @@ namespace MVC_12H_N04.Models
             {
                 new SqlParameter() {ParameterName="@id",SqlDbType=SqlDbType.Int,Value= id},
             };
-            return executaComando(sql, parametros);
+            return ExecutaComando(sql, parametros);
         }
-        public void recuperarPassword(string email, string guid)
+        public void RecuperarPassword(string email, string guid)
         {
             string sql = "UPDATE Utilizadores set linkRecuperar=@lnk WHERE email=@email";
 
@@ -411,9 +411,9 @@ namespace MVC_12H_N04.Models
                 new SqlParameter() {ParameterName="@email",SqlDbType=SqlDbType.NVarChar,Value=email },
                 new SqlParameter() {ParameterName="@lnk",SqlDbType=SqlDbType.NVarChar,Value=guid },
             };
-            executaComando(sql, parametros);
+            ExecutaComando(sql, parametros);
         }
-        public void atualizarPassword(string guid, string password)
+        public void AtualizarPassword(string guid, string password)
         {
             string sql = "UPDATE Utilizadores set password=HASHBYTES('SHA2_512',@password),estado=1,linkRecuperar=null WHERE linkRecuperar=@lnk";
 
@@ -422,22 +422,22 @@ namespace MVC_12H_N04.Models
                 new SqlParameter() {ParameterName="@password",SqlDbType=SqlDbType.NVarChar,Value=password},
                 new SqlParameter() {ParameterName="@lnk",SqlDbType=SqlDbType.NVarChar,Value=guid },
             };
-            executaComando(sql, parametros);
+            ExecutaComando(sql, parametros);
         }
-        public DataTable devolveDadosUtilizador(string email)
+        public DataTable DevolveDadosUtilizador(string email)
         {
             string sql = "SELECT * FROM utilizadores WHERE email=@email";
             List<SqlParameter> parametros = new List<SqlParameter>()
             {
                 new SqlParameter() {ParameterName="@email",SqlDbType=SqlDbType.VarChar,Value=email }
             };
-            DataTable dados = devolveConsulta(sql, parametros);
+            DataTable dados = DevolveConsulta(sql, parametros);
             return dados;
         }
         #endregion
 
         #region livros
-        public DataTable pesquisaProdutos(String tipo)
+        public DataTable PesquisaProdutos(String tipo)
         {
 
             string sql = "SELECT * FROM Produtos WHERE tipo like @tipo";
@@ -445,9 +445,9 @@ namespace MVC_12H_N04.Models
             {
                 new SqlParameter() {ParameterName="@tipo",SqlDbType=SqlDbType.NVarChar,Value="%"+tipo+"%"}
             };
-            return devolveConsulta(sql, parametros);
+            return DevolveConsulta(sql, parametros);
         }
-        public DataTable pesquisaProdutosPorNome(String nome)
+        public DataTable PesquisaProdutosPorNome(String nome)
         {
 
             string sql = "SELECT * FROM Produtos WHERE nome like @nome";
@@ -455,37 +455,37 @@ namespace MVC_12H_N04.Models
             {
                 new SqlParameter() {ParameterName="@nome",SqlDbType=SqlDbType.NVarChar,Value="%"+nome+"%"}
             };
-            return devolveConsulta(sql, parametros);
+            return DevolveConsulta(sql, parametros);
         }
-        public DataTable listaProdutos()
+        public DataTable ListaProdutos()
         {
             string sql = "SELECT * FROM Produtos";
-            return devolveConsulta(sql);
+            return DevolveConsulta(sql);
         }
-        public DataTable listaCompras(int id)
+        public DataTable ListaCompras(int id)
         {
             string sql = "SELECT * FROM Compras WHERE id=@id";
             List<SqlParameter> parametros = new List<SqlParameter>()
             {
                 new SqlParameter() {ParameterName="@id",SqlDbType=SqlDbType.Int,Value=id}
             };
-            return devolveConsulta(sql,parametros);
+            return DevolveConsulta(sql,parametros);
         }
-        public int getNComentarios(int id)
+        public int GetNComentarios(int id)
         {
             string sql = "SELECT comentario FROM Produtos WHERE id=@id";
             List<SqlParameter> parametros = new List<SqlParameter>()
             {
                 new SqlParameter(){ParameterName="@id",SqlDbType=SqlDbType.Int,Value=id}
             };
-            DataTable dados = devolveConsulta(sql, parametros);
+            DataTable dados = DevolveConsulta(sql, parametros);
 
             string comentarios = dados.Rows[0]["comentario"].ToString();
-            var _element = JObject.Parse(comentarios);
-            var array = JArray.Parse(_element["Comentario"].ToString());
+            var element = JObject.Parse(comentarios);
+            var array = JArray.Parse(element["Comentario"].ToString());
             return array.Count;
         }
-        public JArray getComentarios(int id)
+        public JArray GetComentarios(int id)
         {
             try
             {
@@ -497,11 +497,11 @@ namespace MVC_12H_N04.Models
                     new SqlParameter(){ParameterName="@id",SqlDbType=SqlDbType.Int,Value=id}
                 };
 
-                DataTable dados = devolveConsulta(sql, parametros);
+                DataTable dados = DevolveConsulta(sql, parametros);
 
                 string comentarios = dados.Rows[0]["comentario"].ToString();
-                var _element = JObject.Parse(comentarios);
-                return JArray.Parse(_element["Comentario"].ToString());
+                var element = JObject.Parse(comentarios);
+                return JArray.Parse(element["Comentario"].ToString());
 
 
             }
@@ -512,25 +512,25 @@ namespace MVC_12H_N04.Models
             }
 
         }
-        public DataTable devolveDadosProduto(int id)
+        public DataTable DevolveDadosProduto(int id)
         {
             string sql = "SELECT * FROM Produtos WHERE id=@id";
             List<SqlParameter> parametros = new List<SqlParameter>()
             {
                 new SqlParameter() {ParameterName="@id",SqlDbType=SqlDbType.Int,Value=id }
             };
-            return devolveConsulta(sql, parametros);
+            return DevolveConsulta(sql, parametros);
         }
-        public DataTable listaLivrosComPrecoInferior(int nlivro)
+        public DataTable ListaLivrosComPrecoInferior(int nlivro)
         {
             string sql = "SELECT * FROM LIVROS where preco<=(select preco from livros where nlivro=@nlivro)";
             List<SqlParameter> parametros = new List<SqlParameter>()
             {
                 new SqlParameter() {ParameterName="@nlivro",SqlDbType=SqlDbType.Int,Value=nlivro }
             };
-            return devolveConsulta(sql, parametros);
+            return DevolveConsulta(sql, parametros);
         }
-        public int adicionarProduto(string nome, decimal preco, string descricao, string marca, string tipo)
+        public int AdicionarProduto(string nome, decimal preco, string descricao, string marca, string tipo)
         {
             string sql = "INSERT INTO Produtos (nome,preco,descricao,marca,quantidade,estado,tipo) VALUES ";
             sql += "(@nome,@preco,@descricao,@marca,@quantidade,@estado,@tipo);SELECT CAST(SCOPE_IDENTITY() AS INT);";
@@ -544,23 +544,23 @@ namespace MVC_12H_N04.Models
                 new SqlParameter() {ParameterName="@estado",SqlDbType=SqlDbType.Bit,Value=1},
                 new SqlParameter() {ParameterName="@tipo",SqlDbType=SqlDbType.NVarChar,Value=tipo}
             };
-            SqlCommand comando = new SqlCommand(sql, ligacaoBD);
+            SqlCommand comando = new SqlCommand(sql, _ligacaoBd);
             comando.Parameters.AddRange(parametros.ToArray());
             int id = (int)comando.ExecuteScalar();
             comando.Dispose();
             return id;
         }
 
-        public void removerProduto(int id)
+        public void RemoverProduto(int id)
         {
             string sql = "DELETE FROM Produtos WHERE id=@id";
             List<SqlParameter> parametros = new List<SqlParameter>()
             {
                 new SqlParameter() {ParameterName="@id",SqlDbType=SqlDbType.Int,Value=id }
             };
-            executaComando(sql, parametros);
+            ExecutaComando(sql, parametros);
         }
-        public void atualizaProduto(int id, string nome, int quantidade, decimal preco, string marca, string descricao,string tipo)
+        public void AtualizaProduto(int id, string nome, int quantidade, decimal preco, string marca, string descricao,string tipo)
         {
             string sql = "UPDATE Produtos SET marca=@marca,nome=@nome,quantidade=@quantidade,preco=@preco,descricao=@descricao,tipo=@tipo WHERE id=@id;";
             List<SqlParameter> parametros = new List<SqlParameter>()
@@ -573,11 +573,11 @@ namespace MVC_12H_N04.Models
                 new SqlParameter() {ParameterName="@tipo",SqlDbType=SqlDbType.NVarChar,Value= tipo},
                 new SqlParameter() {ParameterName="@descricao",SqlDbType=SqlDbType.NVarChar,Value=descricao}
             };
-            executaComando(sql, parametros);
+            ExecutaComando(sql, parametros);
         }
-        public void addProdutoQt(int id)
+        public void AddProdutoQt(int id)
         {
-            DataTable dados = devolveDadosProduto(id);
+            DataTable dados = DevolveDadosProduto(id);
 
             int quantidade = int.Parse(dados.Rows[0]["quantidade"].ToString()) + 1; 
             string sql = "UPDATE Produtos SET quantidade=@quantidade WHERE id=@id";
@@ -587,44 +587,44 @@ namespace MVC_12H_N04.Models
                 new SqlParameter() {ParameterName="@id",SqlDbType=SqlDbType.Int,Value= id},
                 new SqlParameter() {ParameterName="@quantidade",SqlDbType=SqlDbType.Int,Value= quantidade}
             };
-            executaComando(sql, parametros);
+            ExecutaComando(sql, parametros);
         }
         #endregion
         #region empréstimos
-        public DataTable listaEmprestimosPorConcluir()
+        public DataTable ListaEmprestimosPorConcluir()
         {
             string sql = "SELECT * FROM Emprestimos where estado=1";
-            return devolveConsulta(sql);
+            return DevolveConsulta(sql);
         }
-        public DataTable listaTodosEmprestimos()
+        public DataTable ListaTodosEmprestimos()
         {
             string sql = "SELECT * FROM Emprestimos";
-            return devolveConsulta(sql);
+            return DevolveConsulta(sql);
         }
-        public DataTable listaTodosEmprestimosComNomes()
+        public DataTable ListaTodosEmprestimosComNomes()
         {
             string sql = @"SELECT nemprestimo,livros.nome as nomeLivro,utilizadores.nome as nomeLeitor,data_emprestimo,data_devolve,emprestimos.estado
                         FROM Emprestimos inner join livros on emprestimos.nlivro=livros.nlivro
                         inner join utilizadores on emprestimos.idutilizador=utilizadores.id";
-            return devolveConsulta(sql);
+            return DevolveConsulta(sql);
         }
-        public DataTable listaTodosEmprestimosPorConcluirComNomes()
+        public DataTable ListaTodosEmprestimosPorConcluirComNomes()
         {
             string sql = @"SELECT nemprestimo,livros.nome as nomeLivro,utilizadores.nome as nomeLeitor,data_emprestimo,data_devolve,emprestimos.estado
                         FROM Emprestimos inner join livros on emprestimos.nlivro=livros.nlivro
                         inner join utilizadores on emprestimos.idutilizador=utilizadores.id where emprestimos.estado=1";
-            return devolveConsulta(sql);
+            return DevolveConsulta(sql);
         }
-        public DataTable listaTodosEmprestimos(int nleitor)
+        public DataTable ListaTodosEmprestimos(int nleitor)
         {
             string sql = "SELECT * FROM Emprestimos Where idutilizador=@idutilizador";
             List<SqlParameter> parametros = new List<SqlParameter>()
             {
                 new SqlParameter() {ParameterName="@idutilizador",SqlDbType=SqlDbType.Int,Value=nleitor }
             };
-            return devolveConsulta(sql, parametros);
+            return DevolveConsulta(sql, parametros);
         }
-        public DataTable listaTodosEmprestimosComNomes(int nleitor)
+        public DataTable ListaTodosEmprestimosComNomes(int nleitor)
         {
             string sql = @"SELECT nemprestimo,livros.nome as nomeLivro,utilizadores.nome as nomeLeitor,data_emprestimo,data_devolve,emprestimos.estado
                         FROM Emprestimos inner join livros on emprestimos.nlivro=livros.nlivro
@@ -633,19 +633,19 @@ namespace MVC_12H_N04.Models
             {
                 new SqlParameter() {ParameterName="@idutilizador",SqlDbType=SqlDbType.Int,Value=nleitor }
             };
-            return devolveConsulta(sql, parametros);
+            return DevolveConsulta(sql, parametros);
         }
 
-        public DataTable listaEmprestimosPorConcluir(int nleitor)
+        public DataTable ListaEmprestimosPorConcluir(int nleitor)
         {
             string sql = "SELECT * FROM Emprestimos Where idutilizador=@idutilizador and estado=0";
             List<SqlParameter> parametros = new List<SqlParameter>()
             {
                 new SqlParameter() {ParameterName="@idutilizador",SqlDbType=SqlDbType.Int,Value=nleitor }
             };
-            return devolveConsulta(sql, parametros);
+            return DevolveConsulta(sql, parametros);
         }
-        public DataTable listaTodosEmprestimosPorConcluirComNomes(int nleitor)
+        public DataTable ListaTodosEmprestimosPorConcluirComNomes(int nleitor)
         {
             string sql = @"SELECT nemprestimo,livros.nome as nomeLivro,utilizadores.nome as nomeLeitor,data_emprestimo,data_devolve,emprestimos.estado
                         FROM Emprestimos inner join livros on emprestimos.nlivro=livros.nlivro
@@ -654,14 +654,14 @@ namespace MVC_12H_N04.Models
             {
                 new SqlParameter() {ParameterName="@idutilizador",SqlDbType=SqlDbType.Int,Value=nleitor }
             };
-            return devolveConsulta(sql, parametros);
+            return DevolveConsulta(sql, parametros);
         }
-        public DataTable listaEmprestimosAtrasados()
+        public DataTable ListaEmprestimosAtrasados()
         {
             string sql = "SELECT * FROM Emprestimos where data_devolve<getdate()";
-            return devolveConsulta(sql);
+            return DevolveConsulta(sql);
         }
-        public void adicionarEmprestimo(int nlivro, int nleitor, DateTime dataDevolve)
+        public void AdicionarEmprestimo(int nlivro, int nleitor, DateTime dataDevolve)
         {
             string sql = "SELECT * FROM livros WHERE nlivro=@nlivro";
             List<SqlParameter> parametrosBloquear = new List<SqlParameter>()
@@ -669,8 +669,8 @@ namespace MVC_12H_N04.Models
                 new SqlParameter() {ParameterName="@nlivro",SqlDbType=SqlDbType.Int,Value=nlivro }
             };
             //iniciar transação
-            SqlTransaction transacao = ligacaoBD.BeginTransaction(IsolationLevel.Serializable);
-            DataTable dados = devolveConsulta(sql, parametrosBloquear, transacao);
+            SqlTransaction transacao = _ligacaoBd.BeginTransaction(IsolationLevel.Serializable);
+            DataTable dados = DevolveConsulta(sql, parametrosBloquear, transacao);
 
             try
             {
@@ -681,7 +681,7 @@ namespace MVC_12H_N04.Models
                     new SqlParameter() {ParameterName="@nlivro",SqlDbType=SqlDbType.Int,Value=nlivro },
                     new SqlParameter() {ParameterName="@estado",SqlDbType=SqlDbType.Int,Value=0 },
                 };
-                executaComando(sql, parametrosUpdate, transacao);
+                ExecutaComando(sql, parametrosUpdate, transacao);
                 //registar empréstimo
                 sql = @"INSERT INTO Emprestimos(nlivro,idutilizador,data_emprestimo,data_devolve,estado) 
                             VALUES (@nlivro,@idutilizador,@data_emprestimo,@data_devolve,@estado)";
@@ -693,7 +693,7 @@ namespace MVC_12H_N04.Models
                     new SqlParameter() {ParameterName="@data_devolve",SqlDbType=SqlDbType.Date,Value=dataDevolve },
                     new SqlParameter() {ParameterName="@estado",SqlDbType=SqlDbType.Int,Value=1 },
                 };
-                executaComando(sql, parametrosInsert, transacao);
+                ExecutaComando(sql, parametrosInsert, transacao);
                 //concluir transação
                 transacao.Commit();
             }
@@ -706,9 +706,9 @@ namespace MVC_12H_N04.Models
         /// <summary>
         /// Termina um empréstimo e altera o estado do livro
         /// </summary>
-        public void concluirEmprestimo(int nemprestimo)
+        public void ConcluirEmprestimo(int nemprestimo)
         {
-            DataTable dadosEmprestimo = devolveDadosEmprestimo(nemprestimo);
+            DataTable dadosEmprestimo = DevolveDadosEmprestimo(nemprestimo);
             int nlivro = int.Parse(dadosEmprestimo.Rows[0]["nlivro"].ToString());
             string sql = "SELECT * FROM livros WHERE nlivro=@nlivro";
             List<SqlParameter> parametrosBloquear = new List<SqlParameter>()
@@ -716,8 +716,8 @@ namespace MVC_12H_N04.Models
                 new SqlParameter() {ParameterName="@nlivro",SqlDbType=SqlDbType.Int,Value=nlivro }
             };
             //iniciar transação
-            SqlTransaction transacao = ligacaoBD.BeginTransaction(IsolationLevel.Serializable);
-            DataTable dados = devolveConsulta(sql, parametrosBloquear, transacao);
+            SqlTransaction transacao = _ligacaoBd.BeginTransaction(IsolationLevel.Serializable);
+            DataTable dados = DevolveConsulta(sql, parametrosBloquear, transacao);
 
             try
             {
@@ -728,7 +728,7 @@ namespace MVC_12H_N04.Models
                     new SqlParameter() {ParameterName="@nlivro",SqlDbType=SqlDbType.Int,Value=nlivro },
                     new SqlParameter() {ParameterName="@estado",SqlDbType=SqlDbType.Int,Value=1 },
                 };
-                executaComando(sql, parametrosUpdate, transacao);
+                ExecutaComando(sql, parametrosUpdate, transacao);
                 //terminar empréstimo
                 sql = @"UPDATE Emprestimos SET estado=@estado WHERE nemprestimo=@nemprestimo";
                 List<SqlParameter> parametrosInsert = new List<SqlParameter>()
@@ -736,7 +736,7 @@ namespace MVC_12H_N04.Models
                     new SqlParameter() {ParameterName="@nemprestimo",SqlDbType=SqlDbType.Int,Value=nemprestimo },
                     new SqlParameter() {ParameterName="@estado",SqlDbType=SqlDbType.Int,Value=0 },
                 };
-                executaComando(sql, parametrosInsert, transacao);
+                ExecutaComando(sql, parametrosInsert, transacao);
                 //concluir transação
                 transacao.Commit();
             }
@@ -746,14 +746,14 @@ namespace MVC_12H_N04.Models
             }
             dados.Dispose();
         }
-        public DataTable devolveDadosEmprestimo(int nemprestimo)
+        public DataTable DevolveDadosEmprestimo(int nemprestimo)
         {
             string sql = "SELECT * FROM emprestimos WHERE nemprestimo=@nemprestimo";
             List<SqlParameter> parametros = new List<SqlParameter>()
             {
                 new SqlParameter() {ParameterName="@nemprestimo",SqlDbType=SqlDbType.Int,Value=nemprestimo }
             };
-            return devolveConsulta(sql, parametros);
+            return DevolveConsulta(sql, parametros);
         }
         #endregion
     }

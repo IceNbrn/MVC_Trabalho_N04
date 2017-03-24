@@ -12,22 +12,22 @@
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.username)
+            @Html.DisplayNameFor(model => model.Username)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.email)
+            @Html.DisplayNameFor(model => model.Email)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.morada)
+            @Html.DisplayNameFor(model => model.Morada)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.nif)
+            @Html.DisplayNameFor(model => model.Nif)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.perfil)
+            @Html.DisplayNameFor(model => model.Perfil)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.estado)
+            @Html.DisplayNameFor(model => model.Estado)
         </th>
         <th></th>
     </tr>
@@ -35,22 +35,22 @@
 @foreach (var item in Model) {
     <tr>
         <td>
-            @Html.DisplayFor(modelItem => item.username)
+            @Html.DisplayFor(modelItem => item.Username)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.email)
+            @Html.DisplayFor(modelItem => item.Email)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.morada)
+            @Html.DisplayFor(modelItem => item.Morada)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.nif)
+            @Html.DisplayFor(modelItem => item.Nif)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.perfil)
+            @Html.DisplayFor(modelItem => item.Perfil)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.estado)
+            @Html.DisplayFor(modelItem => item.Estado)
         </td>
         <td>
             @Html.ActionLink("Editar", "Edit", new { /* id=item.PrimaryKey */ }) |

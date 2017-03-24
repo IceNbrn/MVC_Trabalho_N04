@@ -11,32 +11,32 @@ namespace MVC_12H_N04.Models
     public class LoginModel
     {
         [Required(ErrorMessage = "O Username de utilizador é obrigatório")]
-        public string username { get; set; }
+        public string Username { get; set; }
 
         [Required(ErrorMessage = "Palavra passe é obrigatória")]
         [DataType(DataType.Password)]
-        public string password { get; set; }
+        public string Password { get; set; }
     }
-    public class LoginBD
+    public class LoginBd
     {
 
-        public UtilizadoresModel validarLogin(LoginModel login)
+        public UtilizadoresModel ValidarLogin(LoginModel login)
         {
             string sql = "SELECT * FROM utilizadores WHERE username=@username AND ";
             sql += " password=HASHBYTES('SHA2_512',@password)";
             List<SqlParameter> parametros = new List<SqlParameter>()
             {
-                new SqlParameter() {ParameterName="@username",SqlDbType=SqlDbType.NVarChar,Value=login.username },
-                new SqlParameter() {ParameterName="@password",SqlDbType=SqlDbType.NVarChar,Value=login.password },
+                new SqlParameter() {ParameterName="@username",SqlDbType=SqlDbType.NVarChar,Value=login.Username },
+                new SqlParameter() {ParameterName="@password",SqlDbType=SqlDbType.NVarChar,Value=login.Password },
             };
-            DataTable dados = BD.Instance.devolveConsulta(sql, parametros);
+            DataTable dados = Bd.Instance.DevolveConsulta(sql, parametros);
             UtilizadoresModel utilizador = null;
 
             if (dados != null && dados.Rows.Count > 0)
             {
                 utilizador = new UtilizadoresModel();
-                utilizador.username = dados.Rows[0][1].ToString();
-                utilizador.perfil = int.Parse(dados.Rows[0][6].ToString());
+                utilizador.Username = dados.Rows[0][1].ToString();
+                utilizador.Perfil = int.Parse(dados.Rows[0][6].ToString());
             }
             return utilizador;
         }

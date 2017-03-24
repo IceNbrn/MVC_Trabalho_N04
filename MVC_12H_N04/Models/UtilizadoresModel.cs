@@ -14,83 +14,83 @@ namespace MVC_12H_N04.Models
         [Required(ErrorMessage = "Campo Username tem de ser preenchido")]
         [StringLength(50)]
         [MinLength(2, ErrorMessage = "Username muito pequeno")]
-        public string username { get; set; }
+        public string Username { get; set; }
         
         [MinLength(5, ErrorMessage = "O email tem de ser preenchido")]
         [DataType(DataType.EmailAddress)]
-        public string email { get; set; }
+        public string Email { get; set; }
 
         [Display(Name = "Palavra passe")]
         [MinLength(5, ErrorMessage = "Palavra passe muito pequena")]
         [DataType(DataType.Password)]
-        public string password { get; set; }
+        public string Password { get; set; }
 
         [DataType(DataType.Password)]
         [Display(Name = "Confirme a sua palavra passe")]
         [Compare("password", ErrorMessage = "Palavras passe não são iguais")]
-        public string confirmaPassword { get; set; }
+        public string ConfirmaPassword { get; set; }
 
         [MinLength(5, ErrorMessage = "A morada tem de ser preenchido")]
         [StringLength(300)]
-        public string morada { get; set; }
+        public string Morada { get; set; }
 
         [MinLength(5, ErrorMessage = "O nif tem de ser preenchido")]
         [StringLength(300)]
-        public string nif { get; set; }
+        public string Nif { get; set; }
 
-        public int perfil { get; set; }
+        public int Perfil { get; set; }
 
-        public bool estado { get; set; }
+        public bool Estado { get; set; }
     }
 
-    public class UtilizadoresBD
+    public class UtilizadoresBd
     {
         
         //create
-        public void adicionarUtilizadores(UtilizadoresModel novo)
+        public void AdicionarUtilizadores(UtilizadoresModel novo)
         {
             string sql = "INSERT INTO utilizadores(username,email,morada,nif,estado,perfil,password)";
             sql += "VALUES (@username,@email,@morada,@nif,@estado,@perfil,HASHBYTES('SHA2_512',@password))";
             List<SqlParameter> parametros = new List<SqlParameter>()
             {
                 new SqlParameter(){ParameterName="@username",
-                    SqlDbType =SqlDbType.NVarChar,Value=novo.username},
+                    SqlDbType =SqlDbType.NVarChar,Value=novo.Username},
                 new SqlParameter(){ParameterName="@password",
-                    SqlDbType =SqlDbType.NVarChar,Value=novo.password},
+                    SqlDbType =SqlDbType.NVarChar,Value=novo.Password},
                  new SqlParameter(){ParameterName="@perfil",
                     SqlDbType =SqlDbType.Int,Value=1},
                  new SqlParameter(){ParameterName="@estado",
                     SqlDbType =SqlDbType.Bit,Value=true},
                  new SqlParameter(){ParameterName="@nif",
-                    SqlDbType =SqlDbType.Int,Value=novo.nif},
+                    SqlDbType =SqlDbType.Int,Value=novo.Nif},
                  new SqlParameter(){ParameterName="@email",
-                    SqlDbType =SqlDbType.NVarChar,Value=novo.email},
+                    SqlDbType =SqlDbType.NVarChar,Value=novo.Email},
                  new SqlParameter(){ParameterName="@morada",
-                    SqlDbType =SqlDbType.NVarChar,Value=novo.morada},
+                    SqlDbType =SqlDbType.NVarChar,Value=novo.Morada},
             };
-            BD.Instance.executaComando(sql, parametros);
+            Bd.Instance.ExecutaComando(sql, parametros);
         }
         //read
-        public List<UtilizadoresModel> lista()
+        public List<UtilizadoresModel> Lista()
         {
             string sql = "SELECT * FROM utilizadores";
-            DataTable registos = BD.Instance.devolveConsulta(sql);
+            DataTable registos = Bd.Instance.DevolveConsulta(sql);
             List<UtilizadoresModel> lista = new List<UtilizadoresModel>();
             foreach (DataRow data in registos.Rows)
             {
                 UtilizadoresModel novo = new UtilizadoresModel();
-                novo.username = data[1].ToString();
-                novo.password = data[8].ToString();
-                novo.morada = data[3].ToString();
-                novo.nif = data[4].ToString();
-                novo.password = data[8].ToString();
-                novo.perfil = int.Parse(data[6].ToString());
-                novo.estado = bool.Parse(data[5].ToString());
+                novo.Username = data[1].ToString();
+                novo.Password = data[8].ToString();
+                novo.Morada = data[3].ToString();
+                novo.Nif = data[4].ToString();
+                novo.Password = data[8].ToString();
+                novo.Perfil = int.Parse(data[6].ToString());
+                novo.Estado = bool.Parse(data[5].ToString());
                 lista.Add(novo);
             }
             return lista;
         }
-        public List<UtilizadoresModel> lista(string id)
+        public List<UtilizadoresModel> Lista(string id)
         {
             string sql = "SELECT * FROM utilizadores WHERE id = @id";
             List<SqlParameter> parametros = new List<SqlParameter>()
@@ -98,40 +98,40 @@ namespace MVC_12H_N04.Models
                 new SqlParameter(){ParameterName="@id",
                     SqlDbType =SqlDbType.Int,Value=id}
             };
-            DataTable registos = BD.Instance.devolveConsulta(sql, parametros);
+            DataTable registos = Bd.Instance.DevolveConsulta(sql, parametros);
             List<UtilizadoresModel> lista = new List<UtilizadoresModel>();
             foreach (DataRow data in registos.Rows)
             {
                 UtilizadoresModel novo = new UtilizadoresModel();
-                novo.username = data[1].ToString();
-                novo.password = data[8].ToString();
-                novo.morada = data[3].ToString();
-                novo.nif = data[4].ToString();
-                novo.password = data[8].ToString();
-                novo.perfil = int.Parse(data[6].ToString());
-                novo.estado = bool.Parse(data[5].ToString());
+                novo.Username = data[1].ToString();
+                novo.Password = data[8].ToString();
+                novo.Morada = data[3].ToString();
+                novo.Nif = data[4].ToString();
+                novo.Password = data[8].ToString();
+                novo.Perfil = int.Parse(data[6].ToString());
+                novo.Estado = bool.Parse(data[5].ToString());
                 lista.Add(novo);
             }
             return lista;
         }
         //update
-        public void editarUtilizador(UtilizadoresModel novo)
+        public void EditarUtilizador(UtilizadoresModel novo)
         {
             string sql = @"UPDATE utilizadores SET email=@email,username=@username,morada=@morada,nif=@nif,estado=@estado 
                             WHERE username=@username";
 
             List<SqlParameter> parametros = new List<SqlParameter>()
             {
-                new SqlParameter() {ParameterName="@email",SqlDbType=SqlDbType.VarChar,Value=novo.email },
-                new SqlParameter() {ParameterName="@username",SqlDbType=SqlDbType.VarChar,Value=novo.username },
-                new SqlParameter() {ParameterName="@morada",SqlDbType=SqlDbType.VarChar,Value=novo.morada },
-                new SqlParameter() {ParameterName="@nif",SqlDbType=SqlDbType.VarChar,Value=novo.nif },
-                new SqlParameter() {ParameterName="@estado",SqlDbType=SqlDbType.VarChar,Value=novo.estado },
+                new SqlParameter() {ParameterName="@email",SqlDbType=SqlDbType.VarChar,Value=novo.Email },
+                new SqlParameter() {ParameterName="@username",SqlDbType=SqlDbType.VarChar,Value=novo.Username },
+                new SqlParameter() {ParameterName="@morada",SqlDbType=SqlDbType.VarChar,Value=novo.Morada },
+                new SqlParameter() {ParameterName="@nif",SqlDbType=SqlDbType.VarChar,Value=novo.Nif },
+                new SqlParameter() {ParameterName="@estado",SqlDbType=SqlDbType.VarChar,Value=novo.Estado },
             };
-            BD.Instance.executaComando(sql, parametros);
+            Bd.Instance.ExecutaComando(sql, parametros);
         }
         //delete
-        public void removerUtilizador(string id)
+        public void RemoverUtilizador(string id)
         {
             string sql = "DELETE FROM Utilizadores WHERE id=@id";
             List<SqlParameter> parametros = new List<SqlParameter>()
@@ -139,7 +139,7 @@ namespace MVC_12H_N04.Models
                 new SqlParameter(){ParameterName="@id",
                     SqlDbType =SqlDbType.Int,Value=id}
             };
-            BD.Instance.executaComando(sql, parametros);
+            Bd.Instance.ExecutaComando(sql, parametros);
         }
     }
 }
