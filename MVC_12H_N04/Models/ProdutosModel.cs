@@ -59,8 +59,9 @@ namespace MVC_12H_N04.Models
 
             return lista;
         }
-        public List<ProdutosModel> Lista(int id)
+        public List<ProdutosModel> Lista(string id)
         {
+            id 
             string sql = "SELECT * FROM Produtos WHERE id=@id";
             List<SqlParameter> parametros = new List<SqlParameter>()
             {
@@ -121,7 +122,7 @@ namespace MVC_12H_N04.Models
             };
             Bd.Instance.ExecutaComando(sql, parametros);
         }
-        public void RemoverProduto(int id)
+        public void RemoverProduto(string id)
         {
             string sql = "DELETE FROM Produtos WHERE id=@id";
             List<SqlParameter> parametros = new List<SqlParameter>()
