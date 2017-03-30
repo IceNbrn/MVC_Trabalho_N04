@@ -43,6 +43,7 @@ namespace MVC_Tutorial_2017.Controllers
         {
             Error401();
             return View(_bd.Lista(id)[0]);
+
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -57,6 +58,7 @@ namespace MVC_Tutorial_2017.Controllers
         {
             Error401();
             return View(_bd.Lista(id)[0]);
+
         }
         [HttpPost]
         [ValidateAntiForgeryToken]

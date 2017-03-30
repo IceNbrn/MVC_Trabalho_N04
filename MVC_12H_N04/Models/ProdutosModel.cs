@@ -35,6 +35,8 @@ namespace MVC_12H_N04.Models
         public bool Estado { get; set; }
 
         public string Tipo { get; set; }
+
+        public string Id { get; set; }
     }
     public class ProdutosBd
     {
@@ -54,6 +56,7 @@ namespace MVC_12H_N04.Models
                 novo.Quantidade = 1;
                 novo.Estado = bool.Parse(dados[8].ToString());
                 novo.Tipo = dados[9].ToString();
+                novo.Id = dados[0].ToString();
                 lista.Add(novo);
             }
 
@@ -61,7 +64,7 @@ namespace MVC_12H_N04.Models
         }
         public List<ProdutosModel> Lista(string id)
         {
-            id 
+            
             string sql = "SELECT * FROM Produtos WHERE id=@id";
             List<SqlParameter> parametros = new List<SqlParameter>()
             {
@@ -144,6 +147,7 @@ namespace MVC_12H_N04.Models
                 new SqlParameter() {ParameterName="@quantidade",SqlDbType=SqlDbType.Int,Value=produto.Quantidade },
                 new SqlParameter() {ParameterName="@estado",SqlDbType=SqlDbType.Bit,Value=produto.Estado },
                 new SqlParameter() {ParameterName="@tipo",SqlDbType=SqlDbType.NVarChar,Value=produto.Tipo },
+                new SqlParameter() {ParameterName="@id",SqlDbType=SqlDbType.NVarChar,Value=produto.Id }
             };
             Bd.Instance.ExecutaComando(sql, parametros);
         }

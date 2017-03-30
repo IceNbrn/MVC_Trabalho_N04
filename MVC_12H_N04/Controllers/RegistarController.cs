@@ -15,14 +15,13 @@ namespace MVC_12H_N04.Controllers
         {
             return View();
         }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Index(UtilizadoresModel novo)
         {
-            if (ModelState.IsValid)
-            {
-                _bd.AdicionarUtilizadores(novo);
-                return RedirectToAction("Index", "Login");
-            }
-            return View();
+            if (!ModelState.IsValid || _bd.EmailExist(novo.Email) || _bd.UsernameExist(novo.Username)) return View();
+            _bd.AdicionarUtilizadores(novo);
+            return RedirectToAction("Index", "Login");
         }
     }
 }

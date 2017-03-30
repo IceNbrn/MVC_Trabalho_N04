@@ -15,25 +15,29 @@ namespace MVC_12H_N04.Models
         [StringLength(50)]
         [MinLength(2, ErrorMessage = "Username muito pequeno")]
         public string Username { get; set; }
-        
+
+        [Required(ErrorMessage = "Campo Email tem de ser preenchido")]
         [MinLength(5, ErrorMessage = "O email tem de ser preenchido")]
         [DataType(DataType.EmailAddress)]
         public string Email { get; set; }
 
+        [Required(ErrorMessage = "Campo Password tem de ser preenchido")]
         [Display(Name = "Palavra passe")]
         [MinLength(5, ErrorMessage = "Palavra passe muito pequena")]
         [DataType(DataType.Password)]
         public string Password { get; set; }
 
+        [Required(ErrorMessage = "Campo Confirmar Password tem de ser preenchido")]
         [DataType(DataType.Password)]
         [Display(Name = "Confirme a sua palavra passe")]
-        [Compare("password", ErrorMessage = "Palavras passe não são iguais")]
+        [Compare("Password", ErrorMessage = "Palavras passe não são iguais")]
         public string ConfirmaPassword { get; set; }
 
         [MinLength(5, ErrorMessage = "A morada tem de ser preenchido")]
         [StringLength(300)]
         public string Morada { get; set; }
 
+        [Required(ErrorMessage = "Campo Nif tem de ser preenchido")]
         [MinLength(5, ErrorMessage = "O nif tem de ser preenchido")]
         [StringLength(300)]
         public string Nif { get; set; }
@@ -41,6 +45,8 @@ namespace MVC_12H_N04.Models
         public int Perfil { get; set; }
 
         public bool Estado { get; set; }
+
+        public string Id { get; set; }
     }
 
     public class UtilizadoresBd
@@ -86,6 +92,7 @@ namespace MVC_12H_N04.Models
                 novo.Password = data[8].ToString();
                 novo.Perfil = int.Parse(data[6].ToString());
                 novo.Estado = bool.Parse(data[5].ToString());
+                novo.Id = data[0].ToString();
                 lista.Add(novo);
             }
             return lista;
@@ -104,10 +111,10 @@ namespace MVC_12H_N04.Models
             {
                 UtilizadoresModel novo = new UtilizadoresModel();
                 novo.Username = data[1].ToString();
-                novo.Password = data[8].ToString();
+                novo.Email = data[2].ToString();
                 novo.Morada = data[3].ToString();
-                novo.Nif = data[4].ToString();
                 novo.Password = data[8].ToString();
+                novo.Nif = data[4].ToString();
                 novo.Perfil = int.Parse(data[6].ToString());
                 novo.Estado = bool.Parse(data[5].ToString());
                 lista.Add(novo);
@@ -140,6 +147,26 @@ namespace MVC_12H_N04.Models
                     SqlDbType =SqlDbType.Int,Value=id}
             };
             Bd.Instance.ExecutaComando(sql, parametros);
+        }
+        //email existe
+        public bool EmailExist(string email)
+        {
+            string sql = "SELECT email FROM Utilizadores WHERE email = @email";
+            List<SqlParameter> parameters = new List<SqlParameter>()
+            {
+                new SqlParameter(){ParameterName = "@email",SqlDbType = SqlDbType.NVarChar,Value= email}
+            };
+            return Bd.Instance.DevolveConsulta(sql, parameters).Rows.Count > 0;
+        }
+        //username existe
+        public bool UsernameExist(string username)
+        {
+            string sql = "SELECT username FROM Utilizadores WHERE username = @username";
+            List<SqlParameter> parameters = new List<SqlParameter>()
+            {
+                new SqlParameter(){ParameterName = "@username",SqlDbType = SqlDbType.NVarChar,Value= username}
+            };
+            return Bd.Instance.DevolveConsulta(sql, parameters).Rows.Count > 0;
         }
     }
 }

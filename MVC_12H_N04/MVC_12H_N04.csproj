@@ -263,7 +263,6 @@
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Login\Index.cshtml" />
-    <Content Include="Views\Utilizadores\Index.cshtml" />
     <Content Include="Views\Utilizadores\Create.cshtml" />
     <Content Include="Views\Utilizadores\Delete.cshtml" />
     <Content Include="Views\Utilizadores\Edit.cshtml" />
@@ -272,6 +271,7 @@
     <Content Include="Views\Produtos\Delete.cshtml" />
     <Content Include="Views\Produtos\Create.cshtml" />
     <Content Include="Views\Produtos\Edit.cshtml" />
+    <Content Include="Views\Utilizadores\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
