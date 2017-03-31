@@ -34,24 +34,24 @@ namespace MVC_12H_N04.Controllers
             _bd.AdicionarProdutos(novo);
             return RedirectToAction("Index");
         }
-        public ActionResult Delete(string id)
+        public ActionResult Delete(int id)
         {
             Error401();
-            return View(_bd.Lista(id)[0]);
+            return View(_bd.Lista((int)id)[0]);
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
         [ActionName("Delete")]
-        public ActionResult ConfirmarDelete(string id)
+        public ActionResult ConfirmarDelete(int? id)
         {
-            _bd.RemoverProduto(id);
+            _bd.RemoverProduto((int)id);
             return RedirectToAction("index");
         }
 
-        public ActionResult Edit(string id)
+        public ActionResult Edit(int? id)
         {
             Error401();
-            return View(_bd.Lista(id)[0]);
+            return View(_bd.Lista((int)id)[0]);
         }
         [HttpPost]
         [ValidateAntiForgeryToken]

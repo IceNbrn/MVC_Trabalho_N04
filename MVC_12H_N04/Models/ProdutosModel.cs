@@ -17,7 +17,7 @@ namespace MVC_12H_N04.Models
         public string Nome { get; set; }
 
         [Display(Name = "Preço")]
-        [MinLength(5, ErrorMessage = "O preco tem de ser preenchido")]
+        [Required(ErrorMessage = "Campo Preço tem de ser preenchido")]
         [DataType(DataType.Currency)]
         public decimal Preco { get; set; }
 
@@ -36,7 +36,8 @@ namespace MVC_12H_N04.Models
 
         public string Tipo { get; set; }
 
-        public string Id { get; set; }
+        [Key]
+        public int Id { get; set; }
     }
     public class ProdutosBd
     {
@@ -56,13 +57,13 @@ namespace MVC_12H_N04.Models
                 novo.Quantidade = 1;
                 novo.Estado = bool.Parse(dados[8].ToString());
                 novo.Tipo = dados[9].ToString();
-                novo.Id = dados[0].ToString();
+                novo.Id = int.Parse(dados[0].ToString());
                 lista.Add(novo);
             }
 
             return lista;
         }
-        public List<ProdutosModel> Lista(string id)
+        public List<ProdutosModel> Lista(int id)
         {
             
             string sql = "SELECT * FROM Produtos WHERE id=@id";
@@ -83,6 +84,7 @@ namespace MVC_12H_N04.Models
                 novo.Quantidade = 1;
                 novo.Estado = bool.Parse(dados[8].ToString());
                 novo.Tipo = dados[9].ToString();
+                novo.Id = int.Parse(dados[0].ToString());
                 lista.Add(novo);
             }
 
@@ -125,7 +127,7 @@ namespace MVC_12H_N04.Models
             };
             Bd.Instance.ExecutaComando(sql, parametros);
         }
-        public void RemoverProduto(string id)
+        public void RemoverProduto(int id)
         {
             string sql = "DELETE FROM Produtos WHERE id=@id";
             List<SqlParameter> parametros = new List<SqlParameter>()
@@ -136,11 +138,11 @@ namespace MVC_12H_N04.Models
         }
         public void AtualizarProduto(ProdutosModel produto)
         {
-            string sql = "UPDATE Quartos SET nome=@nmome,preco=@preco,descricao=@descricao,marca=@marca,quantidade=@quantidade,estado=@estado,tipo=@tipo ";
+            string sql = "UPDATE Produtos SET nome=@nmome,preco=@preco,descricao=@descricao,marca=@marca,quantidade=@quantidade,estado=@estado,tipo=@tipo ";
             sql += " WHERE id=@id";
             List<SqlParameter> parametros = new List<SqlParameter>()
             {
-                new SqlParameter() {ParameterName="@nome",SqlDbType=SqlDbType.VarChar,Value=produto.Nome },
+                new SqlParameter() {ParameterName="@nome",SqlDbType=SqlDbType.NVarChar,Value=produto.Nome },
                 new SqlParameter() {ParameterName="@preco",SqlDbType=SqlDbType.Decimal,Value=produto.Preco },
                 new SqlParameter() {ParameterName="@descricao",SqlDbType=SqlDbType.NVarChar,Value=produto.Descricao },
                 new SqlParameter() {ParameterName="@marca",SqlDbType=SqlDbType.NVarChar,Value=produto.Marca },

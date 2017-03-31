@@ -124,16 +124,16 @@ namespace MVC_12H_N04.Models
         //update
         public void EditarUtilizador(UtilizadoresModel novo)
         {
-            string sql = @"UPDATE utilizadores SET email=@email,username=@username,morada=@morada,nif=@nif,estado=@estado 
+            string sql = @"UPDATE Utilizadores SET email=@email,username=@username,morada=@morada,nif=@nif,estado=@estado 
                             WHERE username=@username";
 
             List<SqlParameter> parametros = new List<SqlParameter>()
             {
-                new SqlParameter() {ParameterName="@email",SqlDbType=SqlDbType.VarChar,Value=novo.Email },
-                new SqlParameter() {ParameterName="@username",SqlDbType=SqlDbType.VarChar,Value=novo.Username },
-                new SqlParameter() {ParameterName="@morada",SqlDbType=SqlDbType.VarChar,Value=novo.Morada },
-                new SqlParameter() {ParameterName="@nif",SqlDbType=SqlDbType.VarChar,Value=novo.Nif },
-                new SqlParameter() {ParameterName="@estado",SqlDbType=SqlDbType.VarChar,Value=novo.Estado },
+                new SqlParameter() {ParameterName="@email",SqlDbType=SqlDbType.NVarChar,Value=novo.Email },
+                new SqlParameter() {ParameterName="@username",SqlDbType=SqlDbType.NVarChar,Value=novo.Username },
+                new SqlParameter() {ParameterName="@morada",SqlDbType=SqlDbType.NVarChar,Value=novo.Morada },
+                new SqlParameter() {ParameterName="@nif",SqlDbType=SqlDbType.NVarChar,Value=novo.Nif },
+                new SqlParameter() {ParameterName="@estado",SqlDbType=SqlDbType.NVarChar,Value=novo.Estado },
             };
             Bd.Instance.ExecutaComando(sql, parametros);
         }
