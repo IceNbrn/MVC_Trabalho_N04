@@ -10,15 +10,15 @@ namespace MVC_12H_N04.Models
 {
     public class ProdutosModel
     {
-        [Display(Name = "Nome")]
         [Required(ErrorMessage = "Campo Nome tem de ser preenchido")]
         [StringLength(50)]
         [MinLength(2, ErrorMessage = "Username muito pequeno")]
         public string Nome { get; set; }
 
-        [Display(Name = "Preço")]
         [Required(ErrorMessage = "Campo Preço tem de ser preenchido")]
-        [DataType(DataType.Currency)]
+        [Display(Name = "Preço")]
+        [Range(typeof(decimal), "0.01", "100000.00", ErrorMessage = "Escreva o preço")]
+        [RegularExpression(@"^\[0-10000]{1,6}\.[0-10000]{2}$", ErrorMessage = "Escreva o preço")]
         public decimal Preco { get; set; }
 
         [Display(Name = "Descrição")]
@@ -138,7 +138,7 @@ namespace MVC_12H_N04.Models
         }
         public void AtualizarProduto(ProdutosModel produto)
         {
-            string sql = "UPDATE Produtos SET nome=@nmome,preco=@preco,descricao=@descricao,marca=@marca,quantidade=@quantidade,estado=@estado,tipo=@tipo ";
+            string sql = "UPDATE Produtos SET nome=@nome,preco=@preco,descricao=@descricao,marca=@marca,quantidade=@quantidade,estado=@estado,tipo=@tipo ";
             sql += " WHERE id=@id";
             List<SqlParameter> parametros = new List<SqlParameter>()
             {
@@ -149,7 +149,7 @@ namespace MVC_12H_N04.Models
                 new SqlParameter() {ParameterName="@quantidade",SqlDbType=SqlDbType.Int,Value=produto.Quantidade },
                 new SqlParameter() {ParameterName="@estado",SqlDbType=SqlDbType.Bit,Value=produto.Estado },
                 new SqlParameter() {ParameterName="@tipo",SqlDbType=SqlDbType.NVarChar,Value=produto.Tipo },
-                new SqlParameter() {ParameterName="@id",SqlDbType=SqlDbType.NVarChar,Value=produto.Id }
+                new SqlParameter() {ParameterName="@id",SqlDbType=SqlDbType.Int,Value=produto.Id }
             };
             Bd.Instance.ExecutaComando(sql, parametros);
         }
