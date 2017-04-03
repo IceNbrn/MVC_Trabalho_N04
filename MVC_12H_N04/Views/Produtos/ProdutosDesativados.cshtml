@@ -1,14 +1,11 @@
 ﻿@model IEnumerable<MVC_12H_N04.Models.ProdutosModel>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "ProdutosDesativados";
 }
 
-<h2>Index</h2>
+<h2>ProdutosDesativados</h2>
 
-<p>
-    @Html.ActionLink("Adicionar produto", "Create")
-</p>
 
 <table class="table">
     <tr>
@@ -33,10 +30,10 @@
         <th>
             @Html.DisplayNameFor(model => model.Tipo)
         </th>
+        <th></th>
     </tr>
 
 @foreach (var item in Model) {
-
     <tr>
         <td>
             @Html.DisplayFor(modelItem => item.Nome)
@@ -60,8 +57,7 @@
             @Html.DisplayFor(modelItem => item.Tipo)
         </td>
         <td>
-            @Html.ActionLink("Editar", "Edit", new {  id=item.Id }) |
-            @Html.ActionLink("Apagar", "Delete", new {  id=item.Id  })
+            @Html.ActionLink("Editar", "Edit", new { id=item.Id })
         </td>
     </tr>
 }

@@ -12,13 +12,11 @@ namespace MVC_12H_N04.Models
     {
         [Required(ErrorMessage = "Campo Nome tem de ser preenchido")]
         [StringLength(50)]
-        [MinLength(2, ErrorMessage = "Username muito pequeno")]
+        [MinLength(2, ErrorMessage = "Nome muito pequeno")]
         public string Nome { get; set; }
 
         [Required(ErrorMessage = "Campo Preço tem de ser preenchido")]
         [Display(Name = "Preço")]
-        [Range(typeof(decimal), "0.01", "100000.00", ErrorMessage = "Escreva o preço")]
-        [RegularExpression(@"^\[0-10000]{1,6}\.[0-10000]{2}$", ErrorMessage = "Escreva o preço")]
         public decimal Preco { get; set; }
 
         [Display(Name = "Descrição")]
@@ -106,6 +104,38 @@ namespace MVC_12H_N04.Models
                 novo.Quantidade = 1;
                 novo.Estado = bool.Parse(dados[8].ToString());
                 novo.Tipo = dados[9].ToString();
+                novo.Id = int.Parse(dados[0].ToString());
+                lista.Add(novo);
+            }
+
+            return lista;
+        }
+        public List<ProdutosModel> listaPagina(int nPagina, int registosPorPagina)
+        {
+            string sql = @"SELECT * FROM (select row_number() over (order by nome) as rownum, *
+                            FROM Produtos) AS p WHERE rownum>=@primeiro AND rownum<=@ultimo";
+
+            int primeiro = (nPagina - 1) * registosPorPagina;
+            int ultimo = primeiro + registosPorPagina;
+            List<SqlParameter> parametros = new List<SqlParameter>()
+            {
+                new SqlParameter() {ParameterName="@primeiro",SqlDbType=SqlDbType.Int,Value=primeiro },
+                new SqlParameter() {ParameterName="@ultimo",SqlDbType=SqlDbType.Int,Value=ultimo },
+            };
+            DataTable registos = Bd.Instance.DevolveConsulta(sql, parametros);
+            List<ProdutosModel> lista = new List<ProdutosModel>();
+
+            foreach (DataRow dados in registos.Rows)
+            {
+                ProdutosModel novo = new ProdutosModel();
+                novo.Nome = dados[2].ToString();
+                novo.Preco = decimal.Parse(dados[3].ToString());
+                novo.Descricao = dados[4].ToString();
+                novo.Marca = dados[6].ToString();
+                novo.Quantidade = 1;
+                novo.Estado = bool.Parse(dados[9].ToString());
+                novo.Tipo = dados[10].ToString();
+                novo.Id = int.Parse(dados[1].ToString());
                 lista.Add(novo);
             }
 
@@ -152,6 +182,32 @@ namespace MVC_12H_N04.Models
                 new SqlParameter() {ParameterName="@id",SqlDbType=SqlDbType.Int,Value=produto.Id }
             };
             Bd.Instance.ExecutaComando(sql, parametros);
+        }
+        public List<ProdutosModel> pesquisa(string nome)
+        {
+            string sql = "SELECT * FROM Produtos WHERE nome like @nome";
+            List<SqlParameter> parametros = new List<SqlParameter>()
+            {
+                new SqlParameter() {ParameterName="@nome",SqlDbType=System.Data.SqlDbType.NVarChar,Value="%" + (string)nome + "%" }
+            };
+            DataTable registos = Bd.Instance.DevolveConsulta(sql, parametros);
+            List<ProdutosModel> lista = new List<ProdutosModel>();
+
+            foreach (DataRow dados in registos.Rows)
+            {
+                ProdutosModel novo = new ProdutosModel();
+                novo.Id = int.Parse(dados[0].ToString());
+                novo.Nome = dados[1].ToString();
+                novo.Preco = decimal.Parse(dados[2].ToString());
+                novo.Descricao = dados[3].ToString();
+                novo.Marca = dados[5].ToString();
+                novo.Quantidade = int.Parse(dados[7].ToString());
+                novo.Estado = bool.Parse(dados[8].ToString());
+                novo.Tipo = dados[9].ToString();
+                lista.Add(novo);
+            }
+
+            return lista;
         }
     }
 }

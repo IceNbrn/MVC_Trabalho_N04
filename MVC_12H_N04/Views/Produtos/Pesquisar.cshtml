@@ -1,0 +1,72 @@
+﻿@model MVC_12H_N04.Models.ProdutosModel
+
+
+@{
+    ViewBag.Title = "Pesquisar";
+}
+
+<h2>Pesquisar</h2>
+
+<form method="post" class="form-horizontal" id="form">
+    Pesquisar:<input type="text" name="tbNome" id="tbNome" class="form-control" />
+    <input type="submit" value="Pesquisar" class="btn" />
+</form>
+
+@if (ViewBag.listaProdutos != null)
+{
+    <table class="table">
+        <tr>
+            <th>
+                Nome
+            </th>
+            <th>
+                Preço
+            </th>
+            <th>
+                Descrição
+            </th>
+            <th>
+                Marca
+            </th>
+            <th>
+                Quantidade
+            </th>
+            <th>
+                Estado
+            </th>
+            <th>
+                Tipo
+            </th>
+        </tr>
+
+        @foreach (var item in ViewBag.listaProdutos)
+        {
+            <tr>
+                <td>
+                    @Html.Raw(item.Nome)
+                </td>
+                <td>
+                    @Html.Raw(item.Preco)
+                </td>
+                <td>
+                    @Html.Raw(item.Descricao)
+                </td>
+                <td>
+                    @Html.Raw(item.Marca)
+                </td>
+                <td>
+                    @Html.Raw(item.Quantidade)
+                </td>
+                <td>
+                    @Html.Raw(item.Estado)
+                </td>
+                <td>
+                    @Html.Raw(item.Tipo)
+                </td>
+            </tr>
+        }
+
+    </table>
+}
+
+

@@ -187,6 +187,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\LogOutController.cs" />
+    <Compile Include="Controllers\MarcasController.cs" />
     <Compile Include="Controllers\ProdutosController.cs" />
     <Compile Include="Controllers\RegistarController.cs" />
     <Compile Include="Controllers\UtilizadoresController.cs" />
@@ -196,6 +197,7 @@
     </Compile>
     <Compile Include="Models\BD.cs" />
     <Compile Include="Models\LoginModel.cs" />
+    <Compile Include="Models\MarcasModel.cs" />
     <Compile Include="Models\ProdutosModel.cs" />
     <Compile Include="Models\UtilizadoresModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -272,6 +274,15 @@
     <Content Include="Views\Produtos\Create.cshtml" />
     <Content Include="Views\Utilizadores\Index.cshtml" />
     <Content Include="Views\Produtos\Edit.cshtml" />
+    <Content Include="Views\Produtos\Pesquisar.cshtml" />
+    <Content Include="Views\Produtos\Pesquisar2.cshtml" />
+    <Content Include="Views\Produtos\Pesquisar3.cshtml" />
+    <Content Include="Views\Marcas\Index.cshtml" />
+    <Content Include="Views\Marcas\Create.cshtml" />
+    <Content Include="Views\Marcas\Delete.cshtml" />
+    <Content Include="Views\Marcas\Edit.cshtml" />
+    <Content Include="Views\Produtos\ProdutosDesativados.cshtml" />
+    <Content Include="Views\Produtos\Index2.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

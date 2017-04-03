@@ -1,15 +1,23 @@
 ﻿@model IEnumerable<MVC_12H_N04.Models.ProdutosModel>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Index2";
 }
 
-<h2>Index</h2>
+<h2>Index2</h2>
 
 <p>
-    @Html.ActionLink("Adicionar produto", "Create")
+    @{
+        int paginaAtual = ViewBag.paginaAtual;
+        int paginaSeguinte = paginaAtual + 1;
+        int paginaAnterior = paginaAtual - 1;
+    }
+    @if (paginaAnterior > 0)
+    {
+        @Html.ActionLink("Página Anterior", "Index2/" + paginaAnterior.ToString())
+    }
+    @Html.ActionLink("Pagina Seguinte", "Index2/" + paginaSeguinte.ToString())
 </p>
-
 <table class="table">
     <tr>
         <th>
@@ -33,10 +41,10 @@
         <th>
             @Html.DisplayNameFor(model => model.Tipo)
         </th>
+        <th></th>
     </tr>
 
 @foreach (var item in Model) {
-
     <tr>
         <td>
             @Html.DisplayFor(modelItem => item.Nome)
@@ -60,8 +68,8 @@
             @Html.DisplayFor(modelItem => item.Tipo)
         </td>
         <td>
-            @Html.ActionLink("Editar", "Edit", new {  id=item.Id }) |
-            @Html.ActionLink("Apagar", "Delete", new {  id=item.Id  })
+            @Html.ActionLink("Editar", "Edit", new { id=item.Id }) |
+            @Html.ActionLink("Apagar", "Delete", new { id=item.Id })
         </td>
     </tr>
 }

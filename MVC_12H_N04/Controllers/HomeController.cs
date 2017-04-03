@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using MVC_12H_N04.Models;
 
 namespace MVC_12H_N04.Controllers
 {
@@ -10,6 +11,8 @@ namespace MVC_12H_N04.Controllers
     {
         public ActionResult Index()
         {
+            ProdutosBd Bd = new ProdutosBd();
+            ViewBag.ListaProdutos3 = Bd.listaPagina(1, 3);
             return View();
         }
 

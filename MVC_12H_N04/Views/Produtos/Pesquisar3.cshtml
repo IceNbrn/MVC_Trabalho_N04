@@ -1,0 +1,68 @@
+﻿@model MVC_12H_N04.Models.ProdutosModel
+
+
+@{
+    ViewBag.Title = "Pesquisar2";
+}
+
+<h2>Pesquisar2</h2>
+
+Pesquisar:<input type="text" name="tbNome" id="tbNome" class="form-control" />
+
+<table id="Resultado" class="table">
+    <tr>
+        <th>
+            Nome
+        </th>
+        <th>
+            Preço
+        </th>
+        <th>
+            Descrição
+        </th>
+        <th>
+            Marca
+        </th>
+        <th>
+            Quantidade
+        </th>
+        <th>
+            Estado
+        </th>
+        <th>
+            Tipo
+        </th>
+    </tr>
+</table>
+
+<script src="~/Scripts/jquery-1.10.2.js"></script>
+<script>
+    $(function () {
+        $("#tbNome").keyup(function () {
+            $("#Resultado tr td").remove();
+            var nome = $("#tbNome").val();
+            var url = "PesquisarJson2";
+            $.ajax({
+                type: "GET",
+                url: url,
+                data: {'nome':nome},
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (dados) {
+                    for (var i = 0; i < dados.length; i++) {
+                        var linha = '<tr><td>';
+                        linha += dados[i].Nome + '</td><td>';
+                        linha += dados[i].Preco + '</td><td>';
+                        linha += dados[i].Descricao + '</td><td>';
+                        linha += dados[i].Marca + '</td><td>';
+                        linha += dados[i].Quantidade + '</td><td>';
+                        linha += dados[i].Estado + '</td><td>';
+                        linha += dados[i].Tipo + '</td><td>';
+                        linha += '</td></tr>';
+                        $("#Resultado").append(linha);
+                    }
+                }
+            });
+        });
+    })
+</script>
