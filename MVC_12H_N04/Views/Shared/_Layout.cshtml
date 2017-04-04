@@ -22,7 +22,7 @@
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                    <li>@Html.ActionLink("Sobre", "About", "Home")</li>
+                    <li>@Html.ActionLink("Produtos", "Produtos", "Home")</li>
                 </ul>
                 <ul class="nav navbar-nav">
                     @if (Session["perfil"] != null && Session["perfil"].ToString() == "0")
@@ -37,7 +37,13 @@
                                 <li>@Html.ActionLink("Pesquisar2", "Pesquisar2", "Produtos")</li>
                             </ul>
                         </li>
-                        <li>@Html.ActionLink("Marcas", "Index", "Marcas")</li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Marcas</a>
+                            <ul class="dropdown-menu">
+                                <li>@Html.ActionLink("Marcas", "Index", "Marcas")</li>
+                                <li>@Html.ActionLink("Numero de Produtos", "Pesquisar", "Produtos")</li>
+                            </ul>
+                        </li>
                     }
                     @if (Session["perfil"] != null && Session["perfil"].ToString() == "1")
                     {
@@ -49,6 +55,7 @@
                                 <li>@Html.ActionLink("Pesquisar2", "Pesquisar2", "Produtos")</li>
                             </ul>
                         </li>
+                        <li>@Html.ActionLink("Numero de Produtos", "Pesquisar", "Produtos")</li>
                     }
                 </ul>
                 @Html.Partial("_LoginPartial")

@@ -23,8 +23,8 @@ namespace MVC_12H_N04.Models
         [MinLength(5, ErrorMessage = "Descrição muito pequena")]
         public string Descricao { get; set; }
 
+        [Required(ErrorMessage = "Campo Marca tem de ser preenchido")]
         [Display(Name = "Marca")]
-        [MinLength(5, ErrorMessage = "A morada tem de ser preenchido")]
         [StringLength(300)]
         public string Marca { get; set; }
 
@@ -45,6 +45,33 @@ namespace MVC_12H_N04.Models
             DataTable registos = Bd.Instance.DevolveConsulta(sql);
             List<ProdutosModel> lista = new List<ProdutosModel>();
 
+            foreach (DataRow dados in registos.Rows)
+            {
+                ProdutosModel novo = new ProdutosModel();
+                novo.Nome = dados[1].ToString();
+                novo.Preco = decimal.Parse(dados[2].ToString());
+                novo.Descricao = dados[3].ToString();
+                novo.Marca = dados[5].ToString();
+                novo.Quantidade = 1;
+                novo.Estado = bool.Parse(dados[8].ToString());
+                novo.Tipo = dados[9].ToString();
+                novo.Id = int.Parse(dados[0].ToString());
+                lista.Add(novo);
+            }
+
+            return lista;
+        }
+        public List<ProdutosModel> Lista(string tipo)
+        {
+
+            string sql = "SELECT * FROM Produtos WHERE tipo=@tipo";
+            List<SqlParameter> parametros = new List<SqlParameter>()
+            {
+                new SqlParameter() {ParameterName="@tipo",SqlDbType=SqlDbType.NVarChar,Value=tipo },
+            };
+            DataTable registos = Bd.Instance.DevolveConsulta(sql, parametros);
+
+            List<ProdutosModel> lista = new List<ProdutosModel>();
             foreach (DataRow dados in registos.Rows)
             {
                 ProdutosModel novo = new ProdutosModel();

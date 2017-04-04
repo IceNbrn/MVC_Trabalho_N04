@@ -283,6 +283,8 @@
     <Content Include="Views\Marcas\Edit.cshtml" />
     <Content Include="Views\Produtos\ProdutosDesativados.cshtml" />
     <Content Include="Views\Produtos\Index2.cshtml" />
+    <Content Include="Views\Marcas\Pesquisar.cshtml" />
+    <Content Include="Views\Home\Produtos.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

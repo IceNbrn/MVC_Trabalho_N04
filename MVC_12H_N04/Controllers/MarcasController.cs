@@ -65,6 +65,15 @@ namespace MVC_12H_N04.Controllers
             ViewBag.listaMarcas = _bd.Lista();
             return RedirectToAction("index");
         }
-        
+        public ActionResult Pesquisar()
+        {
+            return View();
+        }
+        [HttpPost]
+        public ActionResult Pesquisar(string marca)
+        {
+            ViewBag.listaProdutosMarcas = _bd.ListaMarcasProdutos(marca);
+            return View();
+        }
     }
 }

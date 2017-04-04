@@ -9,6 +9,7 @@ namespace MVC_12H_N04.Controllers
 {
     public class HomeController : Controller
     {
+        ProdutosBd _bd = new ProdutosBd();
         public ActionResult Index()
         {
             ProdutosBd Bd = new ProdutosBd();
@@ -16,10 +17,14 @@ namespace MVC_12H_N04.Controllers
             return View();
         }
 
-        public ActionResult About()
+        public ActionResult Produtos()
         {
-            ViewBag.Message = "Your application description page.";
-
+            return View();
+        }
+        [HttpPost]
+        public ActionResult Produtos(string produto)
+        {
+            ViewBag.Produtos = _bd.Lista(produto);
             return View();
         }
 

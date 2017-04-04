@@ -1,0 +1,32 @@
+﻿@model MVC_12H_N04.Models.ProdutosModel
+
+@{
+    ViewBag.Title = "Produtos";
+}
+
+<h2>Produtos</h2>
+
+<form method="post" class="form-horizontal" id="form">
+    Pesquisar:<input type="text" name="produto" id="produto" class="form-control" />
+    <input type="submit" value="Procurar" class="btn" />
+</form>
+
+<div class="row">
+    @if (ViewBag.Produtos != null)
+    {
+        foreach (var item in ViewBag.Produtos)
+        {
+            <div class="col-md-4">
+                <h3>@Html.Raw(item.Tipo)</h3>
+                <h2>@Html.Raw(item.Nome) - @Html.Raw(item.Preco)</h2>
+                <p>
+                    @Html.Raw(item.Descricao)
+                </p>
+                <p>
+                    Marca: @Html.Raw(item.Marca)
+                </p>
+            </div>
+        }
+
+    }
+</div>

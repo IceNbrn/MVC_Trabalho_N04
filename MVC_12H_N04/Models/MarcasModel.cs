@@ -60,10 +60,10 @@ namespace MVC_12H_N04.Models
         public List<ProdutosModel> ListaMarcasProdutos(string nome)
         {
 
-            string sql = "SELECT * FROM Produtos INNER JOIN Marcas ON Produtos.marca = Marcas.Nome WHERE Marcas.nome = @nome";
+            string sql = "SELECT COUNT(marca) AS NumeroProdutos, Marcas.Nome FROM Produtos INNER JOIN Marcas ON Produtos.marca = Marcas.Nome WHERE Marcas.nome = @marca GROUP BY Marcas.Nome";
             List<SqlParameter> parametros = new List<SqlParameter>()
             {
-                new SqlParameter() {ParameterName="@nome",SqlDbType=SqlDbType.Int,Value=nome },
+                new SqlParameter() {ParameterName="@marca",SqlDbType=SqlDbType.NVarChar,Value=nome },
             };
             DataTable registos = Bd.Instance.DevolveConsulta(sql, parametros);
 
@@ -71,14 +71,8 @@ namespace MVC_12H_N04.Models
             foreach (DataRow dados in registos.Rows)
             {
                 ProdutosModel novo = new ProdutosModel();
-                novo.Nome = dados[1].ToString();
-                novo.Preco = decimal.Parse(dados[2].ToString());
-                novo.Descricao = dados[3].ToString();
-                novo.Marca = dados[5].ToString();
-                novo.Quantidade = 1;
-                novo.Estado = bool.Parse(dados[8].ToString());
-                novo.Tipo = dados[9].ToString();
-                novo.Id = int.Parse(dados[0].ToString());
+                novo.Nome = dados[0].ToString();
+                novo.Marca = dados[1].ToString();
                 lista.Add(novo);
             }
 
